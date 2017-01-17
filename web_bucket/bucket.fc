@@ -1,0 +1,10 @@
+from troposphere.s3 import Bucket, PublicRead, WebsiteConfiguration
+
+resource(Bucket(
+    name(domain, 'Bucket'),
+    BucketName= domain,
+    AccessControl= PublicRead,
+    WebsiteConfiguration= WebsiteConfiguration(
+        IndexDocument='index.html'
+    )
+))
