@@ -1,6 +1,3 @@
-from troposphere import Base64, FindInMap, GetAtt
-from troposphere.route53 import AliasTarget
-
 s3MappingName='S3HostedZoneIdMapping'
 
 S3HostedZoneMappings = {
@@ -17,8 +14,8 @@ resource(route53.RecordSetType(
     name(source, "S3BucketAliasARecord"),
     Name= source,
     Type= 'A',
-    HostedZoneId= ref(hostedZone),
-    AliasTarget= AliasTarget(
-        DNSName= FindInMap(s3MappingName, ref("AWS::Region"), 'DNSName'),
-        HostedZoneId= FindInMap(s3MappingName, ref("AWS::Region"), 'HostedZoneId')
+    HostedZoneId= Ref(hostedZone),
+    AliasTarget= route53.AliasTarget(
+        DNSName= FindInMap(s3MappingName, Ref("AWS::Region"), 'DNSName'),
+        HostedZoneId= FindInMap(s3MappingName, Ref("AWS::Region"), 'HostedZoneId')
     )))

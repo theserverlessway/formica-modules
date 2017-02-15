@@ -2,6 +2,6 @@ resource(route53.RecordSetType(
     name(source, "MXRecord"),
     Name= source,
     Type= 'MX',
-    HostedZoneId= ref(hostedZone),
+    HostedZoneId= Ref(hostedZone),
     ResourceRecords= target if isinstance(target, list) else [target],
     TTL= 3600))

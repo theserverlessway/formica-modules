@@ -6,4 +6,4 @@ MX_RECORDS = [
     '10 ALT4.ASPMX.L.GOOGLE.COM']
 
 
-module('dns', 'mx_record', hostedZone= hostedZone, source= source, target= MX_RECORDS)
+module('./', 'mx_record', hostedZone= hostedZone, source= source, target= MX_RECORDS)
