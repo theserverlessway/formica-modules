@@ -1,7 +1,0 @@
-resource(route53.RecordSetType(
-    name(source, "ARecord"),
-    Name= source,
-    Type= 'A',
-    HostedZoneId= Ref(hostedZone),
-    ResourceRecords= [target],
-    TTL= 43200))

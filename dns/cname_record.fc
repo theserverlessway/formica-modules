@@ -1,7 +1,0 @@
-resource(route53.RecordSetType(
-    name(source, "CNameRecord"),
-    Name= source,
-    Type= 'CNAME',
-    HostedZoneId= Ref(hostedZone),
-    ResourceRecords= [target],
-    TTL= 43200))

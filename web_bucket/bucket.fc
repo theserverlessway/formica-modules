@@ -1,8 +1,0 @@
-resource(s3.Bucket(
-    name(domain, 'Bucket'),
-    BucketName= domain,
-    AccessControl= s3.PublicRead,
-    WebsiteConfiguration= s3.WebsiteConfiguration(
-        IndexDocument='index.html'
-    )
-))

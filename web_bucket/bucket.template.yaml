@@ -1,0 +1,8 @@
+Resources:
+  {{ domain | mandatory | resource}}Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: {{ domain }}
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html

@@ -1,0 +1,5 @@
+Resources:
+  {{ name | mandatory | resource }}HostedZone:
+    Type: "AWS::Route53::HostedZone"
+    Properties:
+      Name: {{ name | mandatory }}

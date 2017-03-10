@@ -1,0 +1,13 @@
+Resources:
+  {{ source | mandatory | resource}}TXTRecord:
+    Type: "AWS::Route53::RecordSet"
+    Properties:
+      Name: {{ source | mandatory }}
+      Type: TXT
+      HostedZoneId:
+        Ref: {{ hostedZone | mandatory | resource}}HostedZone
+      TTL: 43200
+      ResourceRecords:
+      {% for target in targets | mandatory %}
+        - \"{{ target }}\"
+      {% endfor %}

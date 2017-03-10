@@ -1,0 +1,37 @@
+{% set s3MappingName='S3HostedZoneIdMapping' %}
+
+{% set S3HostedZoneMappings = {
+    'us-east-1': ['s3-website-us-east-1.amazonaws.com', 'Z3AQBSTGFYJSTF'],
+    'eu-central-1': ['s3-website.eu-central-1.amazonaws.com', 'Z21DNDUVLTQW6Q']
+    }
+%}
+
+Mappings:
+  {{ s3MappingName }}:
+    {% for region, data in  S3HostedZoneMappings.items() %}
+    {{ region }}:
+      DNSName: {{ data[0] }}
+      HostedZoneId: {{ data[1] }}
+    {% endfor %}
+
+
+Resources:
+  {{ source | mandatory | resource}}S3BucketAliasARecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName:
+        Ref: {{ hostedZone | mandatory | resource}}HostedZone
+      Name: {{ source | mandatory }}
+      Type: A
+      TTL: '43200'
+      AliasTarget:
+        DNSName:
+          "Fn::FindInMap":
+            - {{ s3MappingName }}
+            - Ref: AWS::Region
+            - DNSName
+        HostedZoneId:
+          "Fn::FindInMap":
+            - {{ s3MappingName }}
+            - Ref: AWS::Region
+            - HostedZoneId
