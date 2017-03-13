@@ -9,5 +9,5 @@ Resources:
       TTL: 43200
       ResourceRecords:
       {% for target in targets | mandatory %}
-        - \"{{ target }}\"
+        - '"{{ target }}"'
       {% endfor %}

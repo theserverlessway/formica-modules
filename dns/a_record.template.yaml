@@ -2,7 +2,7 @@ Resources:
   {{ source | mandatory}}ARecord:
     Type: AWS::Route53::RecordSet
     Properties:
-      HostedZoneName:
+      HostedZoneId:
         Ref: {{ hostedZone | mandatory | resource}}HostedZone
       Name: {{ source | mandatory }}
       Type: A

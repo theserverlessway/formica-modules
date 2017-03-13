@@ -2,7 +2,7 @@ Resources:
   {{ source | resource }}MXRecord:
     Type: AWS::Route53::RecordSet
     Properties:
-      HostedZoneName:
+      HostedZoneId:
         Ref: {{ hostedZone | mandatory | resource }}HostedZone
       Name: {{ source }}
       Type: MX
