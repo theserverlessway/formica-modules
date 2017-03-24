@@ -23,7 +23,6 @@ Resources:
         Ref: {{ hostedZone | mandatory | resource}}HostedZone
       Name: {{ source | mandatory }}
       Type: A
-      TTL: '43200'
       AliasTarget:
         DNSName:
           "Fn::FindInMap":
