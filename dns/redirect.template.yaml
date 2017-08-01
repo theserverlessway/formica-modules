@@ -47,3 +47,6 @@ Resources:
               HostName: {{ redirect_host | mandatory }}
               HttpRedirectCode: "302"
               Protocol: {{ protocol | mandatory }}
+              {% if path %}
+              ReplaceKeyWith: {{ path }}
+              {% endif %}
