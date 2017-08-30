@@ -1,5 +1,5 @@
 Resources:
-  {{ source | mandatory}}ARecord:
+  {{ source | mandatory | resource }}ARecord:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId:

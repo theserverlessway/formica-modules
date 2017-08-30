@@ -1,5 +1,5 @@
 Resources:
-  {{ source | resource }}CNameRecord:
+  {{ source | mandatory | resource  }}CNameRecord:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId:
