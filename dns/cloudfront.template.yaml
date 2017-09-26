@@ -1,0 +1,11 @@
+Resources:
+  {{ domain | mandatory | resource}}DistributionRecord:
+    Type: 'AWS::Route53::RecordSet'
+    Properties:
+      HostedZoneId:
+        Ref: {{hostedZone or domain | mandatory | resource }}HostedZone
+      Name: {{ domain }}
+      Type: A
+      AliasTarget:
+        HostedZoneId: Z2FDTNDATAQYW2
+        DNSName: !GetAtt {{ distribution }}.DomainName

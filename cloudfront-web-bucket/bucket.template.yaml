@@ -1,0 +1,25 @@
+Resources:
+  {{ domain | mandatory | resource}}WebBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      WebsiteConfiguration:
+        IndexDocument: index.html
+  {{ domain | mandatory | resource}}WebBucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref {{ domain | mandatory | resource}}WebBucket
+      PolicyDocument:
+        Statement:
+        - Action:
+          - 's3:GetObject'
+          Effect: Allow
+          Resource:
+          - !Sub 'arn:aws:s3:::${ {{ domain | mandatory | resource}}WebBucket }/*'
+          Principal: '*'
+  {{ domain | mandatory | resource}}RedirectWebBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      WebsiteConfiguration:
+        RedirectAllRequestsTo:
+          HostName: {{ domain }}
+          Protocol: https

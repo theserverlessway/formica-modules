@@ -1,0 +1,64 @@
+Resources:
+  {{ domain | mandatory | resource}}BucketDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        PriceClass: 'PriceClass_All'
+        HttpVersion: http2
+        Origins:
+        - DomainName: !Select [2, !Split ['/', !GetAtt '{{ domain | mandatory | resource}}WebBucket.WebsiteURL']]
+          Id: S3WebBucketOrigin
+          CustomOriginConfig:
+            OriginProtocolPolicy: http-only
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+          - ErrorCode: 403
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+        Enabled: 'true'
+        Aliases:
+          - {{ domain }}
+        DefaultCacheBehavior:
+          DefaultTTL: 60
+          MaxTTL: 300
+          TargetOriginId: S3WebBucketOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+        ViewerCertificate:
+          AcmCertificateArn: !Ref {{ domain | mandatory | resource}}Certificate
+          SslSupportMethod: sni-only
+
+# Redirect Distribution
+  {{ domain | mandatory | resource}}RedirectBucketDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        PriceClass: 'PriceClass_All'
+        HttpVersion: http2
+        Origins:
+        - DomainName: !Select [2, !Split ['/', !GetAtt '{{ domain | mandatory | resource}}RedirectWebBucket.WebsiteURL']]
+          Id: S3WebBucketOrigin
+          CustomOriginConfig:
+            OriginProtocolPolicy: http-only
+        Enabled: 'true'
+        Aliases:
+          - www.{{ domain }}
+        DefaultCacheBehavior:
+          DefaultTTL: 60
+          MaxTTL: 300
+          TargetOriginId: S3WebBucketOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+        ViewerCertificate:
+          AcmCertificateArn: !Ref {{ domain | mandatory | resource}}Certificate
+          SslSupportMethod: sni-only

@@ -1,0 +1,12 @@
+Resources:
+  {{ domain | mandatory | resource}}Certificate:
+    Type: 'AWS::CertificateManager::Certificate'
+    Properties:
+      DomainName: {{ domain }}
+      DomainValidationOptions:
+        - DomainName: {{ domain }}
+          ValidationDomain: {{ domain }}
+        - DomainName: www.{{ domain }}
+          ValidationDomain: {{ domain }}
+      SubjectAlternativeNames:
+        - www.{{ domain }}
