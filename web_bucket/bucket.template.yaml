@@ -1,8 +1,14 @@
 Resources:
-  {{ domain | mandatory | resource}}Bucket:
+  {{ domain | mandatory | resource}}WebBucket:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: {{ domain }}
+      {% if bucket_name %}
+      BucketName: {{ bucket_name }}
+      {% endif %}
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
+
+Outputs:
+  {{ domain | mandatory | resource}}WebBucketWebsiteUrl:
+    Value: !GetAtt {{ domain | mandatory | resource}}WebBucket.WebsiteURL
