@@ -8,7 +8,18 @@ Resources:
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
-
+  {{ domain | mandatory | resource}}WebBucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref {{ domain | mandatory | resource}}WebBucket
+      PolicyDocument:
+        Statement:
+        - Action:
+          - 's3:GetObject'
+          Effect: Allow
+          Resource:
+          - !Sub '${ {{ domain | mandatory | resource}}WebBucket.Arn }/*'
+          Principal: '*'
 Outputs:
   {{ domain | mandatory | resource}}WebBucketWebsiteUrl:
     Value: !GetAtt {{ domain | mandatory | resource}}WebBucket.WebsiteURL
