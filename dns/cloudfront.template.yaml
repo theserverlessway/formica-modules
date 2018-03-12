@@ -1,5 +1,5 @@
 Resources:
-  {{ domain | mandatory | resource}}DistributionRecord:
+  {{ module_name | mandatory | resource}}DistributionRecord:
     Type: 'AWS::Route53::RecordSet'
     Properties:
       HostedZoneId:

@@ -1,12 +1,20 @@
+Properties:
+  {{ module_name }}CertificateArn:
+    Type: String
+
+Conditions:
+  Has{{ module_name }}CertificateArn:
+    !Not [!Equals ['', !Ref {{ module_name }}CertificateArn]]
+
 Resources:
-  {{ domain | mandatory | resource}}BucketDistribution:
+  {{ module_name | mandatory | resource}}BucketCloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         PriceClass: 'PriceClass_All'
         HttpVersion: http2
         Origins:
-        - DomainName: !Select [2, !Split ['/', !GetAtt '{{ domain | mandatory | resource}}WebBucket.WebsiteURL']]
+        - DomainName: !Select [2, !Split ['/', !GetAtt '{{ module_name | mandatory | resource}}WebBucket.WebsiteURL']]
           Id: S3WebBucketOrigin
           CustomOriginConfig:
             OriginProtocolPolicy: http-only
@@ -31,18 +39,18 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
         ViewerCertificate:
-          AcmCertificateArn: !Ref {{ domain | mandatory | resource}}Certificate
+          AcmCertificateArn: !Ref {{ module_name | mandatory | resource}}Certificate
           SslSupportMethod: sni-only
 
 # Redirect Distribution
-  {{ domain | mandatory | resource}}RedirectBucketDistribution:
+  {{ module_name | mandatory | resource}}RedirectBucketCloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         PriceClass: 'PriceClass_All'
         HttpVersion: http2
         Origins:
-        - DomainName: !Select [2, !Split ['/', !GetAtt '{{ domain | mandatory | resource}}RedirectWebBucket.WebsiteURL']]
+        - DomainName: !Select [2, !Split ['/', !GetAtt '{{ module_name | mandatory | resource}}RedirectWebBucket.WebsiteURL']]
           Id: S3WebBucketOrigin
           CustomOriginConfig:
             OriginProtocolPolicy: http-only
@@ -60,5 +68,10 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
         ViewerCertificate:
-          AcmCertificateArn: !Ref {{ domain | mandatory | resource}}Certificate
+          AcmCertificateArn:
+            Fn::If:
+              - Has{{ module_name }}CertificateArn
+              - -
+                - !Ref {{ module_name }}CertificateArn
+                - !Ref {{ module_name | mandatory | resource}}Certificate
           SslSupportMethod: sni-only

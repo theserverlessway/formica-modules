@@ -1,0 +1,14 @@
+Resources:
+  {% set ns = namespace(parent=RootId) %}
+  {% for path in Paths %}
+    {% for part in path.split('/') %}
+      {{ module_name }}{{ part | resource }}ApiGatewayResource:
+        Properties:
+          ParentId: {{ ns.parent | mandatory}}
+          PathPart: '{{ part }}'
+          RestApiId: {{ RestApiId | mandatory }}
+          {% set ns.parent = '!Ref ' + module_name + (part | resource) + 'ApiGatewayResource' %}
+        Type: AWS::ApiGateway::Resource
+    {% endfor %}
+    {% set ns.parent = RootId %}
+  {% endfor %}

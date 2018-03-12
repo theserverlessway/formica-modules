@@ -1,0 +1,3 @@
+stack: modules-test
+capabilities:
+  - CAPABILITY_IAM
