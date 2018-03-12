@@ -1,5 +1,5 @@
 Resources:
-  {{ domain | mandatory | resource}}Certificate:
+  {{ module_name | mandatory | resource}}Certificate:
     Type: 'AWS::CertificateManager::Certificate'
     Properties:
       DomainName: {{ domain }}

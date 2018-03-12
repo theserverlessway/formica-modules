@@ -1,0 +1,21 @@
+Resources:
+  Resources:
+    From: Apigateway::Resources
+    Properties:
+      Paths:
+      - a/b/{c}/d/e/f
+      - a/b/{c}/d/g/h
+      Root: !GetAtt MyRestApi.RootResourceId
+      RestApiId: !Ref MyRestApi
+
+  MyRestApi:
+    Type: "AWS::ApiGateway::RestApi"
+    Properties:
+      Description: "A test API"
+      Name: "MyRestAPI"
+
+    # From: Lambda
+    # Properties:
+    #   Runtime: python3.6
+    #   Code: {{ code('test.py') }}
+    #   Handler: index.method

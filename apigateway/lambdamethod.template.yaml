@@ -1,0 +1,13 @@
+Resources:
+  {{ module_name }}ApiGatewayLambdaMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      HttpMethod: {{HttpMethod | mandatory }}
+      ResourceId: {{ ResourceId | mandatory }}
+      RestApiId: {{ RestApiId | mandatory }}
+      AuthorizationType: {{ AuthorizationType | novalue }}
+      AuthorizerId: {{ AuthorizerId | novalue }}
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: {% raw %}!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${{% endraw %}{{Function | mandatory}}LambdaFunction.Arn}/invocations

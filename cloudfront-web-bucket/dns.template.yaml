@@ -1,12 +1,12 @@
-Modules:
-  - path: ../dns
-    template: cloudfront
-    vars:
-      domain: {{ domain }}
-      distribution: {{ domain | mandatory | resource }}BucketDistribution
-  - path: ../dns
-    template: cloudfront
-    vars:
-      hostedZone: {{ domain | mandatory | resource }}
-      domain: www.{{ domain }}
-      distribution: {{ domain | mandatory | resource }}RedirectBucketDistribution
+Resources:
+  {{ module_name }}BucketDistribution:
+    From: ..::DNS::CloudFront
+      Properties:
+        Domain: {{ Domain }}
+        Distribution: {{ module_name | mandatory | resource }}BucketDistribution
+
+  {{ module_name}}BucketDistribution:
+    From: ..::DNS::CloudFront
+      HostedZone: {{ Domain | mandatory | resource }}
+      Domain: www.{{ domain }}
+      Distribution: {{ module_name | mandatory | resource }}RedirectBucketDistribution
