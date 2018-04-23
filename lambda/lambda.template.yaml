@@ -23,6 +23,7 @@ Resources:
       Handler: {{ Handler or 'index.handler' }}
       Role: !GetAtt {{ module_name }}LambdaExecutionRole.Arn
       Runtime: {{ Runtime or 'python3.6' }}
+      Timeout: {{ Timeout | novalue }}
       Environment:
         Variables: {{Environment or '!Ref AWS::NoValue' }}
 
