@@ -24,11 +24,13 @@ Resources:
       Role: !GetAtt {{ module_name }}LambdaExecutionRole.Arn
       Runtime: {{ Runtime or 'python3.6' }}
       Timeout: {{ Timeout | novalue }}
+      VpcConfig: {{ VpcConfig | novalue }}
       Environment:
         Variables: {{Environment or '!Ref AWS::NoValue' }}
 
   {{ module_name }}LambdaExecutionRole:
     Properties:
+      ManagedPolicyArns: {{ ManagedPolicyArns | novalue}}
       AssumeRolePolicyDocument:
         Statement:
         - Action:
