@@ -19,7 +19,11 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code:
+        {% if Code is mapping %}
+        ZipFile: {{ Code | tojson }}
+        {% else %}
         ZipFile: "{{ Code or "def handler(event, context):\\n    print(event)\\n    return event" }}"
+        {% endif %}
       Handler: {{ Handler or 'index.handler' }}
       Role: !GetAtt {{ module_name }}LambdaExecutionRole.Arn
       Runtime: {{ Runtime or 'python3.6' }}
