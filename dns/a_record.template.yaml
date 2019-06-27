@@ -1,13 +1,13 @@
 Resources:
-  {{ source | mandatory | resource }}ARecord:
+  {{ Source | mandatory | resource }}ARecord:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId:
-        Ref: {{ hostedZone | mandatory | resource}}HostedZone
-      Name: {{ source | mandatory }}
+        Ref: {{ HostedZone | mandatory | resource}}HostedZone
+      Name: {{ Source | mandatory }}
       Type: A
       TTL: '43200'
       ResourceRecords:
-      {% for target in targets | mandatory %}
-        - {{ target }}
+      {% for Target in Targets | mandatory %}
+        - {{ Target }}
       {% endfor %}

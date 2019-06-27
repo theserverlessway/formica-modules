@@ -1,13 +1,13 @@
 Resources:
-  {{ source | resource }}MXRecord:
+  {{ Source | resource }}MXRecord:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId:
-        Ref: {{ hostedZone | mandatory | resource }}HostedZone
-      Name: {{ source }}
+        Ref: {{ HostedZone | mandatory | resource }}HostedZone
+      Name: {{ Source | mandatory }}
       Type: MX
       TTL: '3600'
       ResourceRecords:
-      {% for target in targets | mandatory %}
-        - {{ target }}
+      {% for Target in Targets | mandatory %}
+        - {{ Target }}
       {% endfor %}

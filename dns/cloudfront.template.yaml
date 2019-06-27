@@ -3,9 +3,9 @@ Resources:
     Type: 'AWS::Route53::RecordSet'
     Properties:
       HostedZoneId:
-        Ref: {{hostedZone or domain | mandatory | resource }}HostedZone
-      Name: {{ domain }}
+        Ref: {{HostedZone or Domain | mandatory | resource }}HostedZone
+      Name: {{ Domain }}
       Type: A
       AliasTarget:
         HostedZoneId: Z2FDTNDATAQYW2
-        DNSName: !GetAtt {{ distribution }}.DomainName
+        DNSName: !GetAtt {{ Distribution }}.DomainName
