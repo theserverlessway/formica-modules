@@ -1,5 +1,5 @@
 Resources:
-  {{ domain | mandatory | resource}}WebBucket:
+  {{ Domain | mandatory | resource}}WebBucket:
     Type: "AWS::S3::Bucket"
     Properties:
       {% if bucket_name %}
@@ -8,18 +8,18 @@ Resources:
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
-  {{ domain | mandatory | resource}}WebBucketPolicy:
+  {{ Domain | mandatory | resource}}WebBucketPolicy:
     Type: 'AWS::S3::BucketPolicy'
     Properties:
-      Bucket: !Ref {{ domain | mandatory | resource}}WebBucket
+      Bucket: !Ref {{ Domain | mandatory | resource}}WebBucket
       PolicyDocument:
         Statement:
         - Action:
           - 's3:GetObject'
           Effect: Allow
           Resource:
-          - !Sub '${ {{ domain | mandatory | resource}}WebBucket.Arn }/*'
+          - !Sub '${ {{ Domain | mandatory | resource}}WebBucket.Arn }/*'
           Principal: '*'
 Outputs:
-  {{ domain | mandatory | resource}}WebBucketWebsiteUrl:
-    Value: !GetAtt {{ domain | mandatory | resource}}WebBucket.WebsiteURL
+  {{ Domain | mandatory | resource}}WebBucketWebsiteUrl:
+    Value: !GetAtt {{ Domain | mandatory | resource}}WebBucket.WebsiteURL

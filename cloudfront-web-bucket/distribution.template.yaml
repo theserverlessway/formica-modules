@@ -1,13 +1,14 @@
-Properties:
+Parameters:
   {{ module_name }}CertificateArn:
     Type: String
+    Default: ''
 
 Conditions:
   Has{{ module_name }}CertificateArn:
     !Not [!Equals ['', !Ref {{ module_name }}CertificateArn]]
 
 Resources:
-  {{ module_name | mandatory | resource}}BucketCloudFrontDistribution:
+  {{ module_name | mandatory | resource}}BucketDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
@@ -25,38 +26,9 @@ Resources:
           - ErrorCode: 403
             ResponseCode: 404
             ResponsePagePath: /404.html
-        Enabled: 'true'
+        Enabled: true
         Aliases:
-          - {{ domain }}
-        DefaultCacheBehavior:
-          DefaultTTL: 60
-          MaxTTL: 300
-          TargetOriginId: S3WebBucketOrigin
-          ForwardedValues:
-            QueryString: false
-            Cookies:
-              Forward: none
-          ViewerProtocolPolicy: redirect-to-https
-          Compress: true
-        ViewerCertificate:
-          AcmCertificateArn: !Ref {{ module_name | mandatory | resource}}Certificate
-          SslSupportMethod: sni-only
-
-# Redirect Distribution
-  {{ module_name | mandatory | resource}}RedirectBucketCloudFrontDistribution:
-    Type: AWS::CloudFront::Distribution
-    Properties:
-      DistributionConfig:
-        PriceClass: 'PriceClass_All'
-        HttpVersion: http2
-        Origins:
-        - DomainName: !Select [2, !Split ['/', !GetAtt '{{ module_name | mandatory | resource}}RedirectWebBucket.WebsiteURL']]
-          Id: S3WebBucketOrigin
-          CustomOriginConfig:
-            OriginProtocolPolicy: http-only
-        Enabled: 'true'
-        Aliases:
-          - www.{{ domain }}
+          - {{ Domain }}
         DefaultCacheBehavior:
           DefaultTTL: 60
           MaxTTL: 300
@@ -71,7 +43,39 @@ Resources:
           AcmCertificateArn:
             Fn::If:
               - Has{{ module_name }}CertificateArn
-              - -
-                - !Ref {{ module_name }}CertificateArn
-                - !Ref {{ module_name | mandatory | resource}}Certificate
+              - !Ref {{ module_name }}CertificateArn
+              - !Ref {{ module_name | mandatory | resource}}Certificate
+          SslSupportMethod: sni-only
+
+# Redirect Distribution
+  {{ module_name | mandatory | resource}}RedirectBucketDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        PriceClass: 'PriceClass_All'
+        HttpVersion: http2
+        Origins:
+        - DomainName: !Select [2, !Split ['/', !GetAtt '{{ module_name | mandatory | resource}}RedirectWebBucket.WebsiteURL']]
+          Id: S3WebBucketOrigin
+          CustomOriginConfig:
+            OriginProtocolPolicy: http-only
+        Enabled: true
+        Aliases:
+          - www.{{ Domain }}
+        DefaultCacheBehavior:
+          DefaultTTL: 60
+          MaxTTL: 300
+          TargetOriginId: S3WebBucketOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+        ViewerCertificate:
+          AcmCertificateArn:
+            Fn::If:
+              - Has{{ module_name }}CertificateArn
+              - !Ref {{ module_name }}CertificateArn
+              - !Ref {{ module_name | mandatory | resource}}Certificate
           SslSupportMethod: sni-only

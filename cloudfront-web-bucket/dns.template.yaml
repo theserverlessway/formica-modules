@@ -1,12 +1,12 @@
 Resources:
   {{ module_name }}BucketDistribution:
     From: ..::DNS::CloudFront
-      Properties:
-        Domain: {{ Domain }}
-        Distribution: {{ module_name | mandatory | resource }}BucketDistribution
+    Properties:
+      Distribution: {{ module_name | mandatory | resource }}BucketDistribution
 
-  {{ module_name}}BucketDistribution:
+  {{ module_name}}RedirectBucketDistribution:
     From: ..::DNS::CloudFront
-      HostedZone: {{ Domain | mandatory | resource }}
-      Domain: www.{{ domain }}
+    Properties:
+      HostedZone: {{ HostedZone or Domain | mandatory | resource }}
+      Domain: www.{{ Domain }}
       Distribution: {{ module_name | mandatory | resource }}RedirectBucketDistribution

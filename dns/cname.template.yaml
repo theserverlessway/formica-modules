@@ -1,13 +1,13 @@
 Resources:
-  {{ source | mandatory | resource  }}CNameRecord:
+  {{ Source | mandatory | resource  }}CNameRecord:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId:
-        Ref: {{ hostedZone | mandatory | resource }}HostedZone
+        Ref: {{ HostedZone | mandatory | resource }}HostedZone
       Name: {{ source }}
       Type: CNAME
       TTL: '43200'
       ResourceRecords:
-        {% for target in targets | mandatory %}
-          - {{ target }}
+        {% for Target in Targets | mandatory %}
+          - {{ Target }}
         {% endfor %}
