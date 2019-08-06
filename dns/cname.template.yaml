@@ -3,8 +3,8 @@ Resources:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId:
-        Ref: {{ HostedZone | mandatory | resource }}HostedZone
-      Name: {{ source }}
+        Ref: {{ HostedZone or Domain | mandatory | resource}}HostedZone
+      Name: {{ Source }}
       Type: CNAME
       TTL: '43200'
       ResourceRecords:
